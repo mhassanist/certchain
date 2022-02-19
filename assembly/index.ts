@@ -3,15 +3,16 @@ import { Organization, Certificate } from "./models";
 
 @nearBindgen
 export class Contract {
-  public orgCount: u64 = 0;
-  public certCount: u64 = 0;
+  public orgCount: u64 = 0; //number of organizations in the system
+  public certCount: u64 = 0; //number of certificates issued in the system
 
-  //PersistentVector required to keep track of the keys.
+  //required to keep track of the keys.
   keys: PersistentVector<string> = new PersistentVector<string>("keys");
+  //orgzniation data
   organizations: PersistentMap<string, Organization> = new PersistentMap<
     string,
     Organization
-  >("orgs"); //key:orgCode, value: org object. Value could be of any type.
+  >("orgs"); //key:orgCode, value: org object.
 
   certificates: PersistentMap<string, Certificate> = new PersistentMap<
     string,
@@ -19,24 +20,25 @@ export class Contract {
   >("certs"); //orgCode, orgName
 
   @mutateState()
-  addOrganization(orgId: string, orgName: string, orgAbout: string): string {
-    orgId = orgId.toUpperCase(); //Uppercase organization IDs to ease comparisons.
+  addOrganization(id: string, name: string, about: string): string {
+    //Uppercase organization IDs to ease comparisons.
+    id = id.toUpperCase();
 
-    let o = new Organization(orgName, orgAbout, orgId, Context.sender);
-    if (this.organizations.contains(orgId)) {
+    let tempOrg = new Organization(id, name, about, Context.sender);
+    if (this.organizations.contains(id)) {
       return "Organization with the same code already there";
     }
 
-    this.keys.push(orgId); //save the keys here while saving the value objects
-    this.organizations.set(orgId, o);
+    this.keys.push(id); //keys need to be maintained separately (PersistentMap limitation).
+    this.organizations.set(id, tempOrg); //save new organization
 
-    this.orgCount = this.orgCount + 1;
+    this.orgCount++;
 
     return (
       "Organization created with code= " +
-      orgId.toUpperCase() +
+      id.toUpperCase() +
       " and name= " +
-      orgName.toUpperCase()
+      name
     );
   }
 

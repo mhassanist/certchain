@@ -6,10 +6,10 @@ export class Organization {
   issuerId: string;
   certCount: u64;
 
-  constructor(name: string, about: string, orgId: string, issuerId: string) {
+  constructor(id: string, name: string, about: string, issuerId: string) {
     this.name = name;
     this.about = about;
-    this.orgId = orgId;
+    this.orgId = id;
     this.issuerId = issuerId;
     this.certCount = 0;
   }
