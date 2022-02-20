@@ -7,7 +7,6 @@ import { VMContext } from "near-mock-vm";
 let contract: Contract;
 const CREATOR_ACCOUNT_ID = "bob";
 
-//make sure the instance is properly created
 beforeAll(() => {
   contract = new Contract();
   VMContext.setSigner_account_id(CREATOR_ACCOUNT_ID);
