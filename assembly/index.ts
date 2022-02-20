@@ -1,5 +1,6 @@
 import { PersistentVector, PersistentMap, Context } from "near-sdk-core";
 import { Organization, Certificate } from "./models";
+import { Constants } from "./strings";
 
 @nearBindgen
 export class Contract {
@@ -26,7 +27,7 @@ export class Contract {
 
     let tempOrg = new Organization(id, name, about, Context.sender);
     if (this.organizations.contains(id)) {
-      return "Organization with the same code already there";
+      return Constants.ORG_ALREADY_THERE;
     }
 
     this.keys.push(id); //keys need to be maintained separately (PersistentMap limitation).
@@ -35,10 +36,7 @@ export class Contract {
     this.orgCount++;
 
     return (
-      "Organization created with code= " +
-      id.toUpperCase() +
-      " and name= " +
-      name
+      Constants.ORG_WITH_CODE + id.toUpperCase() + Constants.AND_NAME + name
     );
   }
 
@@ -51,6 +49,7 @@ export class Contract {
     return res;
   }
 
+  //TODO not completed yet
   ///issue certificate
   issueCertificate(
     orgId: string,
@@ -61,11 +60,11 @@ export class Contract {
   ): string {
     //find organizarion
     if (!this.organizations.contains(orgId)) {
-      return "No organization with this id could be found.";
+      return Constants.NO_ORG_FOUND;
     }
     let org = this.organizations.getSome(orgId);
     if (org.issuerId != Context.sender) {
-      return "Issuer id does not match.";
+      return Constants.ISSUER_NO_MATCH;
     }
 
     let certId = orgId + (1000 + org.certCount + 1).toString();
