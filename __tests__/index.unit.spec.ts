@@ -1,9 +1,7 @@
-//import your contract code
 import { Constants } from "../assembly/strings";
 import { Contract } from "../assembly";
 import { VMContext } from "near-mock-vm";
 
-//take an instance of the contract
 let contract: Contract;
 const CREATOR_ACCOUNT_ID = "bob";
 
