@@ -1,5 +1,5 @@
 import { PersistentVector, PersistentMap, Context } from "near-sdk-core";
-import { Organization, Certificate } from "./models";
+import { Organization, Certificate, Nullable } from "./models";
 import { Constants } from "./strings";
 
 @nearBindgen
