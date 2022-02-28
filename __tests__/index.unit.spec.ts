@@ -1,13 +1,10 @@
-//import your contract code
 import { Constants } from "../assembly/strings";
 import { Contract } from "../assembly";
 import { VMContext } from "near-mock-vm";
 
-//take an instance of the contract
 let contract: Contract;
 const CREATOR_ACCOUNT_ID = "bob";
 
-//make sure the instance is properly created
 beforeAll(() => {
   contract = new Contract();
   VMContext.setSigner_account_id(CREATOR_ACCOUNT_ID);
