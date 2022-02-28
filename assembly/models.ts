@@ -1,3 +1,5 @@
+type Nullable<T> = T | null;
+
 @nearBindgen
 export class Organization {
   name: string;
@@ -21,6 +23,7 @@ export class Certificate {
   description: string;
   code: string;
   holderName: string;
+  issuingOrgId: string;
   issueDate: u64;
 
   constructor(
@@ -28,6 +31,7 @@ export class Certificate {
     holderName: string,
     description: string,
     code: string,
+    issuingOrgId: string,
     issueDate: u64
   ) {
     this.name = name;
@@ -35,5 +39,6 @@ export class Certificate {
     this.holderName = holderName;
     this.code = code;
     this.issueDate = issueDate;
+    this.issuingOrgId = issuingOrgId;
   }
 }

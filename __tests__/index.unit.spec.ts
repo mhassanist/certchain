@@ -16,7 +16,7 @@ beforeAll(() => {
 describe("Creating an organization", () => {
   test("Add organization", () => {
     expect(
-      contract.addOrganization(
+      contract.createOrganizationAccount(
         "ABCAcademy",
         "ABCAcademy",
         "From zero to hero training"
@@ -24,6 +24,10 @@ describe("Creating an organization", () => {
     ).toBe(
       Constants.ORG_WITH_CODE + "ABCACADEMY" + Constants.AND_NAME + "ABCAcademy"
     );
+
+    expect(
+      contract.createOrganizationAccount("TK", "DOESNT MATTER", "DOESNT MATTER")
+    ).toBe(Constants.ORG_CODE_CANT_BE_LESS_THAN_THREE_CHAR);
 
     expect(contract.orgCount).toBe(1);
     expect(contract.organizations.contains("ABCACADEMY")).toBe(true);
@@ -37,7 +41,7 @@ describe("Creating an organization", () => {
 
   it("should not allow adding another org with the same id", () => {
     expect(
-      contract.addOrganization(
+      contract.createOrganizationAccount(
         "ABCAcademy",
         "ABCAcademy",
         "From zero to hero training"
@@ -47,12 +51,58 @@ describe("Creating an organization", () => {
     );
     expect(contract.orgCount).toBe(1);
     expect(
-      contract.addOrganization(
+      contract.createOrganizationAccount(
         "ABCAcademy",
         "ABCAcademy",
         "From zero to hero training"
       )
     ).toBe(Constants.ORG_ALREADY_THERE);
     expect(contract.orgCount).toBe(1);
+  });
+});
+
+describe("Issue Certificate", () => {
+  test("Issuing a new certificate", () => {
+    expect(
+      contract.createOrganizationAccount(
+        "ABCAcademy",
+        "ABCAcademy",
+        "From zero to hero training"
+      )
+    ).toBe(
+      Constants.ORG_WITH_CODE + "ABCACADEMY" + Constants.AND_NAME + "ABCAcademy"
+    );
+    expect(
+      contract.issueCertificate(
+        "ABCACADEMY", //orgid
+        "NCD | NEAR Certified Developer", //cert name
+        "NEAR Certified Developer", //cert description
+        "MOHAMMED HASSAN", //holder
+        "msaudi.cse@gmail.com"
+      )
+    ).toBe(
+      Constants.CERT_WITH_CODE +
+        "ABCACADEMY1001" +
+        Constants.GENERATED_SUCCESSFULLY
+    );
+
+    expect(contract.getOrgInfo("ABCACADEMY").certCount).toBe(1);
+
+    expect(
+      contract.issueCertificate(
+        "ABCACADEMY", //orgid
+        "NCD | NEAR Certified Developer", //cert name
+        "NEAR Certified Developer", //cert description
+        "MOHAMMED HASSAN", //holder
+        "msaudi.cse@gmail.com" //holder info
+      )
+    ).toBe(
+      Constants.CERT_WITH_CODE +
+        "ABCACADEMY1002" +
+        Constants.GENERATED_SUCCESSFULLY
+    );
+
+    expect(contract.getOrgInfo("ABCACADEMY").certCount).toBe(2);
+    expect(contract.findCert("ABCACADEMY1003")).toBeNull(); //cert not found
   });
 });
