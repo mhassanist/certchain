@@ -1,6 +1,5 @@
-import { Constants } from "../assembly/strings";
+import * as Constants from "../assembly/constants";
 import { Contract } from "../assembly";
-import { Nullable } from "../assembly/models";
 import { VMContext } from "near-mock-vm";
 
 let contract: Contract;

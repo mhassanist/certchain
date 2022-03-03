@@ -1,6 +1,6 @@
 import { PersistentVector, PersistentMap, Context } from "near-sdk-core";
+import * as Constants from "./constants";
 import { Organization, Certificate, Nullable } from "./models";
-import { Constants } from "./strings";
 
 @nearBindgen
 export class Contract {
@@ -59,11 +59,9 @@ export class Contract {
     }
     return res;
   }
-
   getOrgInfo(orgId: string): Organization {
     return this.organizations.getSome(orgId);
   }
-
   /**
    *
    * @param orgId the organization issuing the certificate
